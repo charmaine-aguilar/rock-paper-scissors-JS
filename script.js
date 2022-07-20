@@ -25,6 +25,7 @@ let getComputerChoice = _ => {
  */
 let getPlayerChoice = _ => {
     let choice = prompt(("Enter your move: "));
+    choice = choice.toLowerCase();
 
     while (!(choice === "rock" || choice === "paper" || choice === "scissors")) {
         
@@ -54,9 +55,29 @@ let playRound = _ => {
 /* 
     Code to determine who wins here
 */
-
-    alert(`Computer: ${getComputerChoice()}\nPlayer: ${getPlayerChoice()}`);
+    let bot = getComputerChoice();
+    let user = getPlayerChoice();
+    
+    if (isWin(bot, user))
+        alert(`Computer: ${bot}\nPlayer: ${user}\n"You win!"`);
+    else if (bot === user)
+        alert(`Computer: ${bot}\nPlayer: ${user}\n"Draw!"`);
+    else
+        alert(`Computer: ${bot}\nPlayer: ${user}\n"You lose!"`);
 };
+
+/**
+ * Determines the winning conditions of the game
+ * @param {*} botMove string as chosen move of the bot
+ * @param {*} userMove string as player's chosen move
+ * @returns boolean depending on winning conditions
+ */
+let isWin = (botMove, userMove) => {
+    if ((userMove === "rock" && botMove === "scissors") ||
+        (userMove === "paper" && botMove === "rock") ||
+        (userMove === "scissors" && botMove === "paper"))
+        return true;
+}
 
 /**
  * Calls @function playRound() to run the "game" 5 times.
