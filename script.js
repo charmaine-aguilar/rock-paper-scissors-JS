@@ -1,5 +1,10 @@
 /**
- * A simple rock paper scissor program that runs 5 times.
+ * A simple rock paper scissor program that repeats the game
+ * until either the bot or the user scores 5 points to win.
+ * A string input of either rock, paper, scissors is asked from
+ * the user, case insensitive.
+ * The program shows the score points every round and will stop
+ * when someone scores 5 points and displays the winner.
  */
 
 /**
@@ -19,7 +24,7 @@ let getComputerChoice = _ => {
 
 /**
  * Prompts user to enter string/move of either rock, paper, scissors.
- * 
+ * Any input besides choices are invalid and be asked for input again.
  * @param {*} _ 
  * @returns the player's move
  */
@@ -27,15 +32,7 @@ let getPlayerChoice = _ => {
     let choice = prompt(("Enter your move: "));
     choice = choice.toLowerCase();
 
-    while (!(choice === "rock" || choice === "paper" || choice === "scissors")) {
-        
-        /*
-        Temporary validation: if null
-        null: pressing cancel puts null on input
-        "": pressing ok when input field is empty
-        */
-        if (choice === null || choice === "")
-            return choice;
+    while (!(choice === "rock" || choice === "paper" || choice === "scissors") || choice === null || choice === "") {
 
         alert(`${choice} is not a valid response. Try again.`);
         choice = prompt(("Enter your move: "));
@@ -50,18 +47,30 @@ let getPlayerChoice = _ => {
  * Uses @function isWin() to determine if user is a winner
  * Displays the winner
  * @param {*} _ 
+ * @return an object containing user and bot winning scores
  */
 let playRound = _ => {
 
     let bot = getComputerChoice();
     let user = getPlayerChoice();
-    
-    if (isWin(bot, user))
-        alert(`Computer: ${bot}\nPlayer: ${user}\n"You win!"`);
-    else if (bot === user)
+    let userWinCount = 0;
+    let botWinCount = 0;
+    let scores = {
+        user : userWinCount,
+        bot : botWinCount
+    };
+
+    if (isWinRound(bot, user)){
+        alert(`You win! Your ${user} beats Bot's ${bot}"`);
+        scores.user++;
+    } else if (bot === user){
         alert(`Computer: ${bot}\nPlayer: ${user}\n"Draw!"`);
-    else
-        alert(`Computer: ${bot}\nPlayer: ${user}\n"You lose!"`);
+    } else {
+        alert(`You lose! Your ${user} is beaten by Bot's ${bot}"`);
+        scores.bot++;
+    }
+
+    return scores;
 };
 
 /**
@@ -70,20 +79,46 @@ let playRound = _ => {
  * @param {*} userMove string as player's chosen move
  * @returns boolean, game result depending on winning conditions
  */
-let isWin = (botMove, userMove) => {
+let isWinRound = (botMove, userMove) => {
     if ((userMove === "rock" && botMove === "scissors") ||
         (userMove === "paper" && botMove === "rock") ||
         (userMove === "scissors" && botMove === "paper"))
         return true;
 }
 
+let isWinGame = (botCount, userCount) => {
+    if (botCount === 5){
+        return "Bot wins!";
+    } else if (userCount === 5) {
+        return "User wins!";
+    }
+}
+
 /**
- * Calls @function playRound() to run the "game" 5 times.
+ * Calls @function playRound() to run the "game" until
+ * someone scores 5 points and wins.
  * @param {*} _ 
  */
 let game = _ => {
-    for (let index = 0; index < 5; index++) {
-        playRound();
+    let results;
+    let userWins = 0;
+    let botWins = 0;
+    let isPlaying = true;
+
+    while (isPlaying){
+        results = playRound();
+        userWins += results.user;
+        botWins += results.bot;
+
+        alert(` SCORES \n
+                Player: ${userWins} \n
+                Bot: ${botWins}
+        `);
+
+        if (userWins === 5 || botWins === 5){
+            alert(isWinGame(botWins, userWins));
+            isPlaying = false;
+        }
     }
 };
 
