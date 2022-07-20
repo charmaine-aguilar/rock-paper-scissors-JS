@@ -47,14 +47,12 @@ let getPlayerChoice = _ => {
 /**
  * Calls @function getComputerChoice()
  * Calls @function getPlayerChoice()
- * Displays the move chosen by both players
+ * Uses @function isWin() to determine if user is a winner
+ * Displays the winner
  * @param {*} _ 
  */
 let playRound = _ => {
 
-/* 
-    Code to determine who wins here
-*/
     let bot = getComputerChoice();
     let user = getPlayerChoice();
     
@@ -67,10 +65,10 @@ let playRound = _ => {
 };
 
 /**
- * Determines the winning conditions of the game
+ * Determines the winning conditions of the user
  * @param {*} botMove string as chosen move of the bot
  * @param {*} userMove string as player's chosen move
- * @returns boolean depending on winning conditions
+ * @returns boolean, game result depending on winning conditions
  */
 let isWin = (botMove, userMove) => {
     if ((userMove === "rock" && botMove === "scissors") ||
