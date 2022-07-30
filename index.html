@@ -9,9 +9,25 @@
     </head>
 
     <body">
-        <section>
-            <h1>Console RPS</h1>
-            <p>Play rock paper scissors on the prompt!</p>
+        <section class="main-container">
+            <h1>Rock Paper Scissors</h1>
+            <p id="show-message">Choose your move!</p>
+            <section class="score-container">
+                <section id="bot-score-container">
+                    <p>Bot</p>
+                    <p id="bot-score">0</p>
+                </section>
+                <section id="player-score-container">
+                    <p>You</p>
+                    <p id="player-score">0</p>
+                </section>
+            </section>
+        </section>
+
+        <section class="button-container">
+            <button id="rock" value="rock">Rock</button>
+            <button id="paper" value=""paper>Paper</button>
+            <button id="scissors" value="scissors">Scissors</button>
         </section>
 
         <!-- Script source -->
