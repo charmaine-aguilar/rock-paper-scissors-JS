@@ -1,3 +1,9 @@
+const p_show_message = document.querySelector("#show-message");
+const p_bot_score = document.querySelector("#bot-score");
+const p_player_score = document.querySelector("#player-score");
+const score_container = document.querySelector(".score-container");
+const button_container = document.querySelector(".button-container");
+
 /**
  * A simple rock paper scissor program that repeats the game
  * until either the bot or the user scores 5 points to win.
@@ -28,8 +34,8 @@ let getComputerChoice = _ => {
  * @param {*} _ 
  * @returns the player's move
  */
-let getPlayerChoice = _ => {
-    let choice = prompt(("Enter your move: "));
+/* let getPlayerChoice = _ => {
+    let choice = this.value;
     choice = choice.toLowerCase();
 
     while (!(choice === "rock" || choice === "paper" || choice === "scissors") || choice === null || choice === "") {
@@ -39,7 +45,7 @@ let getPlayerChoice = _ => {
     }
 
     return choice;
-};
+}; */
 
 /**
  * Calls @function getComputerChoice()
@@ -49,10 +55,10 @@ let getPlayerChoice = _ => {
  * @param {*} _ 
  * @return an object containing user and bot winning scores
  */
-let playRound = _ => {
+ let user = ""; // get user selection by button
 
-    let bot = getComputerChoice();
-    let user = getPlayerChoice();
+let playRound = () => {
+    let bot = getComputerChoice(); //generates random computer move
     let userWinCount = 0;
     let botWinCount = 0;
     let scores = {
@@ -61,12 +67,15 @@ let playRound = _ => {
     };
 
     if (isWinRound(bot, user)){
-        alert(`You win! Your ${user} beats Bot's ${bot}"`);
+        p_show_message.textContent = "You win!";
+        // alert(`You win! Your ${user} beats Bot's ${bot}`);
         scores.user++;
     } else if (bot === user){
-        alert(`Computer: ${bot}\nPlayer: ${user}\n"Draw!"`);
+        p_show_message.textContent = "Draw!";
+        // alert(`Computer: ${bot}\nPlayer: ${user}\n"Draw!"`);
     } else {
-        alert(`You lose! Your ${user} is beaten by Bot's ${bot}"`);
+        p_show_message.textContent = "You lose!";
+        // alert(`You lose! Your ${user} is beaten by Bot's ${bot}`);
         scores.bot++;
     }
 
@@ -87,10 +96,39 @@ let isWinRound = (botMove, userMove) => {
 }
 
 let isWinGame = (botCount, userCount) => {
+
+    let hasWinner = false;
+
+    const para = document.createElement("p");
+
     if (botCount === 5){
-        return "Bot wins!";
+        stopGame();
+        p_show_message.style.display = 'none';
+        const node = document.createTextNode("The Bot wins!");
+        para.appendChild(node);
+        para.style.color = 'red';
+        para.style.fontFamily = 'monospace';
+        const main_container = document.querySelector(".main-container");
+        main_container.insertBefore(para, score_container);
+        hasWinner = true;
+
     } else if (userCount === 5) {
-        return "User wins!";
+        stopGame();
+        p_show_message.style.display = 'none';
+        const node = document.createTextNode("You win!");
+        para.appendChild(node);
+        para.style.color = 'green';
+        const main_container = document.querySelector(".main-container");
+        main_container.insertBefore(para, score_container);
+        hasWinner = true;
+    }
+
+    if (hasWinner) {
+        const play_again = document.createElement('button');
+        const button_node = document.createTextNode("Play again");
+        play_again.setAttribute('id', 'play-again');
+        play_again.appendChild(button_node);
+        button_container.appendChild(play_again);
     }
 }
 
@@ -99,30 +137,86 @@ let isWinGame = (botCount, userCount) => {
  * someone scores 5 points and wins.
  * @param {*} _ 
  */
-let game = _ => {
+/* let game = _ => {
     let results;
     let userWins = 0;
     let botWins = 0;
     let isPlaying = true;
 
-    while (isPlaying){
         results = playRound();
         userWins += results.user;
         botWins += results.bot;
 
-        alert(` SCORES \n
-                Player: ${userWins} \n
-                Bot: ${botWins}
-        `);
+        // alert(` SCORES \n
+        //         Player: ${userWins} \n
+        //         Bot: ${botWins}
+        // `);
 
-        if (userWins === 5 || botWins === 5){
-            alert(isWinGame(botWins, userWins));
-            isPlaying = false;
-        }
-    }
-};
+        // Play until someone wins 5 rounds
+        // if (userWins === 5 || botWins === 5){
+        //     alert(isWinGame(botWins, userWins));
+        //     isPlaying = false;
+        // }
+}; */
+
+let results = 0;
+let userWins = 0;
+let botWins = 0;
 
 /**
  * Start the game.
  */
-game();
+// game();
+
+let stopGame = () => {
+    rock_btn.style.display = 'none';
+    paper_btn.style.display = 'none';
+    scissors_btn.style.display = 'none';
+};
+
+let playAgain = () => {
+    alert("This is activating").
+    play_again.remove();
+    p_player_score.textContent = 0;
+    p_bot_score.textContent = 0;
+    rock_btn.style.display = 'block';
+    paper_btn.style.display = 'block';
+    scissors_btn.style.display = 'block';
+};
+
+/* UI ELEMENTS INTERACTION*/
+const rock_btn = document.querySelector("#rock");
+rock_btn.addEventListener('click', () => {
+    user = "rock";
+    results = playRound();
+    userWins += results.user;
+    botWins += results.bot;
+    p_player_score.textContent = userWins;
+    p_bot_score.textContent = botWins;
+    isWinGame(botWins, userWins);
+});
+
+const paper_btn = document.querySelector("#paper");
+paper_btn.addEventListener('click', () => {
+    user = "paper";
+    results = playRound();
+    userWins += results.user;
+    botWins += results.bot;
+    p_player_score.textContent = userWins;
+    p_bot_score.textContent = botWins;
+    isWinGame(botWins, userWins);
+});
+
+const scissors_btn = document.querySelector("#scissors");
+scissors_btn.addEventListener('click', () => {
+    user = "scissors";
+    results = playRound();
+    userWins += results.user;
+    botWins += results.bot;
+    p_player_score.textContent = userWins;
+    p_bot_score.textContent = botWins;
+    isWinGame(botWins, userWins);
+});
+
+const play_again_btn = document.querySelector("#play-again");
+play_again_btn.addEventListener('click', console.log(e));
