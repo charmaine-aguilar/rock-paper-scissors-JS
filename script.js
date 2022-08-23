@@ -1,9 +1,3 @@
-const p_show_message = document.querySelector("#show-message");
-const p_bot_score = document.querySelector("#bot-score");
-const p_player_score = document.querySelector("#player-score");
-const score_container = document.querySelector(".score-container");
-const button_container = document.querySelector(".button-container");
-
 /**
  * A simple rock paper scissor program that repeats the game
  * until either the bot or the user scores 5 points to win.
@@ -12,6 +6,12 @@ const button_container = document.querySelector(".button-container");
  * The program shows the score points every round and will stop
  * when someone scores 5 points and displays the winner.
  */
+
+const p_show_message = document.querySelector("#show-message");
+const p_bot_score = document.querySelector("#bot-score");
+const p_player_score = document.querySelector("#player-score");
+const score_container = document.querySelector(".score-container");
+const button_container = document.querySelector(".button-container");
 
 /**
  * Generates a random number between 0 to 2 which is floored.
@@ -27,25 +27,6 @@ let getComputerChoice = _ => {
 
     return moves[randomIndex];
 };
-
-/**
- * Prompts user to enter string/move of either rock, paper, scissors.
- * Any input besides choices are invalid and be asked for input again.
- * @param {*} _ 
- * @returns the player's move
- */
-/* let getPlayerChoice = _ => {
-    let choice = this.value;
-    choice = choice.toLowerCase();
-
-    while (!(choice === "rock" || choice === "paper" || choice === "scissors") || choice === null || choice === "") {
-
-        alert(`${choice} is not a valid response. Try again.`);
-        choice = prompt(("Enter your move: "));
-    }
-
-    return choice;
-}; */
 
 /**
  * Calls @function getComputerChoice()
@@ -99,89 +80,43 @@ let isWinGame = (botCount, userCount) => {
 
     let hasWinner = false;
 
-    const para = document.createElement("p");
-
     if (botCount === 5){
         stopGame();
-        p_show_message.style.display = 'none';
-        const node = document.createTextNode("The Bot wins!");
-        para.appendChild(node);
-        para.style.color = 'red';
-        para.style.fontFamily = 'monospace';
-        const main_container = document.querySelector(".main-container");
-        main_container.insertBefore(para, score_container);
+        p_show_message.textContent = 'The Bot wins!';
+        p_show_message.style.color = 'red';
         hasWinner = true;
 
     } else if (userCount === 5) {
         stopGame();
-        p_show_message.style.display = 'none';
-        const node = document.createTextNode("You win!");
-        para.appendChild(node);
-        para.style.color = 'green';
-        const main_container = document.querySelector(".main-container");
-        main_container.insertBefore(para, score_container);
+        p_show_message.textContent = 'You win!';
+        p_show_message.style.color = 'green';
         hasWinner = true;
     }
-
-    if (hasWinner) {
-        const play_again = document.createElement('button');
-        const button_node = document.createTextNode("Play again");
-        play_again.setAttribute('id', 'play-again');
-        play_again.appendChild(button_node);
-        button_container.appendChild(play_again);
-    }
 }
-
-/**
- * Calls @function playRound() to run the "game" until
- * someone scores 5 points and wins.
- * @param {*} _ 
- */
-/* let game = _ => {
-    let results;
-    let userWins = 0;
-    let botWins = 0;
-    let isPlaying = true;
-
-        results = playRound();
-        userWins += results.user;
-        botWins += results.bot;
-
-        // alert(` SCORES \n
-        //         Player: ${userWins} \n
-        //         Bot: ${botWins}
-        // `);
-
-        // Play until someone wins 5 rounds
-        // if (userWins === 5 || botWins === 5){
-        //     alert(isWinGame(botWins, userWins));
-        //     isPlaying = false;
-        // }
-}; */
 
 let results = 0;
 let userWins = 0;
 let botWins = 0;
 
-/**
- * Start the game.
- */
-// game();
-
 let stopGame = () => {
     rock_btn.style.display = 'none';
     paper_btn.style.display = 'none';
     scissors_btn.style.display = 'none';
+    play_again_btn.style.display = 'block';
 };
 
 let playAgain = () => {
-    alert("This is activating").
-    play_again.remove();
+    const play_again = document.querySelector("#play-again");
+    p_show_message.style.display = "block";
+    p_show_message.textContent = "Choose your move!";
+    p_show_message.style.color = 'white';
+    p_show_message.style.fontFamily = 'Arial';
     p_player_score.textContent = 0;
     p_bot_score.textContent = 0;
-    rock_btn.style.display = 'block';
-    paper_btn.style.display = 'block';
-    scissors_btn.style.display = 'block';
+    rock_btn.style.display = 'inline-block';
+    paper_btn.style.display = 'inline-block';
+    scissors_btn.style.display = 'inline-block';
+    play_again_btn.style.display = 'none';
 };
 
 /* UI ELEMENTS INTERACTION*/
@@ -219,4 +154,8 @@ scissors_btn.addEventListener('click', () => {
 });
 
 const play_again_btn = document.querySelector("#play-again");
-play_again_btn.addEventListener('click', console.log(e));
+play_again_btn.addEventListener('click', () => {
+    playAgain();
+    userWins = 0;
+    botWins = 0;
+});
